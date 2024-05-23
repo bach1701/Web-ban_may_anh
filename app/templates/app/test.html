@@ -1,0 +1,287 @@
+Đã dùng 92% bộ nhớ … Nếu hết dung lượng lưu trữ, bạn sẽ không thể tạo, chỉnh sửa và tải tệp lên. Sử dụng 100 GB dung lượng với giá 45.000 ₫ 0 ₫ trong 1 tháng.
+Webpage.h
+const char MAIN_page[] PROGMEM = R"=====(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<title>Auto Door</title>
+<style>
+  body {
+    text-align: center;
+    margin: 0;
+    padding-top: 10px; 
+	background-color: #FBFBFB;
+  }
+  
+  #state {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .button-label {
+    display: block;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  
+  .slider-container 
+  {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #speedControl {
+    width: 375px;
+    margin-bottom: 5px; /* Space between slider and labels */
+  }
+  #speedlabel {
+    text-align: left;
+    margin: 0px 20px;
+    padding-top: 0px;
+  }
+  .speed-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 375px;
+  }
+  #sensor-range-data {
+    text-align: left;
+    margin: 0px 20px;
+    padding-top: 10px;
+  }
+  
+  
+ 
+.main{
+    width: 1000px;
+    height: 500px;
+    text-align: center;
+    padding-top: 300px;
+    background-color: gray;
+}
+.control-buttons {
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+}
+
+.equal-size-button {
+    width: 100px; 
+}
+.paused-gif {
+    animation-play-state: paused !important;
+}
+.distance {
+    margin-top: 50px; 
+    margin-bottom: 50px; 
+}
+
+</style>
+</head>
+<body>
+    background-color: gray;
+<p id="state">Trạng thái: đang cập nhật</p>
+<div class="door-image">
+    <img id="doorImage" class="paused-gif" src="http://vm.thpt.tk/iot/images/default-close.gif" alt="Door Image">
+	<p id="sensor-range-data"><i class="fa-solid fa-wifi" style="rotate: 90deg"></i> <span id="sensor-distance">-1</span>cm</p>
+</div>
+<div class="control-buttons">
+	<div>
+		<button type="button" class="btn btn-primary equal-size-button" id="openButton">Mở cửa</button>
+		<button type="button" class="btn btn-warning equal-size-button" id="pauseButton">Tạm dừng</button>
+		<button type="button" class="btn btn-danger equal-size-button" id="closeButton">Đóng cửa</button>
+	</div>                        
+</div>				
+<p id="speedlabel">Tốc độ: 15</p>
+<div class="slider-container">
+    <input type="range" id="speedControl" min="1" max="3" value="3">
+    <div class="speed-labels">
+        <span>Chậm</span>
+        <span>Trung bình</span>
+        <span>Nhanh</span>
+    </div>
+</div>
+<script>
+let doorState = 'closed'; // closed, open, moving
+let interval;
+
+document.getElementById('openButton').addEventListener('click', function() 
+{
+	callOpenDoor();
+});
+
+document.getElementById('closeButton').addEventListener('click', function() 
+{
+	callCloseDoor();
+});
+
+document.getElementById('pauseButton').addEventListener('click', function() 
+{
+	callPauseMotor();
+});
+
+document.getElementById('speedControl').addEventListener('input', function() 
+{
+	var speed = document.getElementById('speedControl').value;
+	setSpeed(speed);
+});
+
+function moveDoor(action, skipEffect = false) 
+{
+  console.log(action)
+
+  if (action === 'open') 
+  {
+  	if (skipEffect)
+	{
+		document.getElementById("doorImage").src = "http://vm.thpt.tk/iot/images/default-open.gif";
+	}
+	else
+	{
+		document.getElementById("doorImage").src = "http://vm.thpt.tk/iot/images/open.gif";
+	}
+  } 
+  else if (action === 'close') 
+  {
+	if (skipEffect)
+	{
+		document.getElementById("doorImage").src = "http://vm.thpt.tk/iot/images/default-close.gif";
+	}
+	else
+	{
+		document.getElementById("doorImage").src = "http://vm.thpt.tk/iot/images/close.gif";
+	}
+  }
+}
+
+function updateState(state) 
+{
+  document.getElementById('state').innerText = 'Trạng thái: ' + state;
+}
+function updateSpeed(speed) 
+{
+  document.getElementById('speedlabel').innerText = 'Tốc độ: ' + speed;
+}
+function updateSonarData(range) 
+{
+  document.getElementById('sensor-distance').innerText = range;
+}
+
+
+getSnapshotData(); 
+setInterval(function() 
+{
+    getSnapshotData(); 
+}, 500); 
+
+var lastDoorState = 2;
+var lastMotorState = 2;
+
+function getSnapshotData() 
+{
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			data = this.responseText.split("|")
+			var sensorCM = data[0];
+			var doorState = data[1];
+			var motorSpeed = data[2];
+			var isMotorRunning = data[3];
+			
+			updateSpeed(motorSpeed);
+			updateSonarData(sensorCM);
+			
+			if (lastDoorState != doorState)
+			{
+				lastDoorState = doorState;
+			}
+			if (lastMotorState != isMotorRunning)
+			{
+				lastMotorState = isMotorRunning;
+				if (isMotorRunning == 1) 
+				{
+					if (doorState == 1) 
+					{
+						updateState("Đang mở cửa");
+						moveDoor("open");
+					}
+					if (doorState == 0) 
+					{
+						updateState("Đang đóng cửa");
+						moveDoor("close");
+					}
+					if (doorState == 2) 
+					{
+						updateState("Tạm dừng");
+					}
+				}
+				if (isMotorRunning == 0) 
+				{
+					if (doorState == 1) 
+					{
+						updateState("Cửa mở");
+						moveDoor("open", true);
+					}
+					if (doorState == 0) 
+					{
+						updateState("Cửa đóng");
+						moveDoor("close", true);
+					}
+					if (doorState == 2) 
+					{
+						updateState("Tạm dừng");
+					}
+				}
+			}
+		}
+	};
+	xhttp.open("GET","sensor-info", true);
+	xhttp.send();
+}	  
+function callOpenDoor() 
+{
+    var xhttp = new XMLHttpRequest();
+	xhttp.open("GET","open-door", true);
+	xhttp.send();
+}
+function callCloseDoor() 
+{
+    var xhttp = new XMLHttpRequest();
+	xhttp.open("GET","close-door", true);
+	xhttp.send();
+}	
+function callPauseMotor() 
+{
+    var xhttp = new XMLHttpRequest();
+	xhttp.open("GET","stop-motor", true);
+	xhttp.send();
+}
+function setSpeed(speed)
+{
+    var xhttp = new XMLHttpRequest();
+    var url;
+
+    if (speed == 1) {
+        url = "set-speed-low";
+    } else if (speed == 2) {
+        url = "set-speed-med";
+    } else if (speed == 3) {
+        url = "set-speed-high";
+    } else {
+        console.error("Invalid speed setting: " + speed);
+        return;
+    }
+
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+</script>
+</body>
+</html>
+
+)=====";
