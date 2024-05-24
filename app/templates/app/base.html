@@ -13,7 +13,6 @@
         <link href="{% static 'app/css/style.css' %}" rel="stylesheet" />
         <link href="{% static 'app/css/owl.carousel.min.css' %}" rel="stylesheet" />
         <link href="{% static 'app/css/all.min.css' %}" rel="stylesheet" />
-        <link href="{% static 'app/bootstrap/css/bootstrap.css' %}" rel="stylesheet" />
         <!--js-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -21,7 +20,25 @@
         <script src="{% static 'app/js/all.min.js' %}"></script>
         <script src="{% static 'app/js/myscript.js' %}"></script>
         <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
-        <script src="{% static 'app/bootstrap/js/bootstrap.js' %}"></script>
+        <script type="text/javascript">
+          var user = '{{request.user}}'
+          function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        </script>
 
         <title>Mua bán máy ảnh Đà Nẵng</title>
         <meta name="description" content="">
@@ -79,7 +96,6 @@
                         User
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Cài đặt người dùng</a></li>
                         <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
@@ -114,6 +130,7 @@
             About us: 87 Nguyễn Lương Bằng, Hoà Khánh Bắc, Liên Chiểu, Đà Nẵng
         </footer>
         <script src="" async defer></script>
+        <script src="{% static 'app/js/cart.js' %}"></script>
     </body>
       <style>
         body{
