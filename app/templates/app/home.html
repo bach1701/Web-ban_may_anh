@@ -50,165 +50,27 @@
 <br>
   <div class="row justify-content-center">
     {%for product in products %}
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
+    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded custom-height">
       <img class="center-img" src="{{product.ImageURL}}" height="240">
       <div class="product">
         <h6><strong>{{product.nameProduct}}</strong></h6>
         <hr>
-        <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>${{product.price | floatformat:2}}</strong></h4>
+        <button data-product={{product.id}} data-action="add" class="btn btn-success add-btn update-cart">Thêm vào giỏ hàng</button>
+        <a class="btn btn-outline-success spacing-right" href="{% url "detail" %}?id={{product.id}}">Xem</a>
+        <h4 style="display: inline-block; float: right"><strong>${{product.price}}</strong></h4>
       </div>
     </div>
     {%endfor%}
     <br>
-    <!--
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class="center-img" src="{% static "app/images/7c2.jpeg" %}" height="240">
-      <div class="product">
-        <h6><strong>Sony A7CII</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class="center-img" src="{% static "app/images/a74.jpeg" %}" height="240">
-      <div class="product">
-        <h6><strong>Sony A7IV</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/a1.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Sony A1</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn ">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-  </div>
-  <br>
-  <div class="row justify-content-center ">
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/r3.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Canon R3</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/r5.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Canon R5</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/r6.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Canon R6</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-  </div>
-  <br>
-  <div class="row justify-content-center">
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/x100vi.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Fujifilm X100vi</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/xh2.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Fujifilm XH2s</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/xt5.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Fujifilm XT5</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-  </div>
-  <br>
-  <div class="row justify-content-center">
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/z8.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Nikon Z8</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/z7.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Nikon Z7</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-    <div class="col-lg-3 p-3 ms-3 border border-dark rounded">
-      <img class=" center-img" src="{% static "app/images/z62.jpeg" %}" height="240">
-      <div class=" product">
-        <h6><strong>Nikon Z6II</strong></h6>
-        <hr>
-        <button class="btn btn-outline-secondary add-btn">Thêm vào giỏ hàng</button>
-        <a class="btn btn-outline-success" href="#">Xem</a>
-        <h4 style="display: inline-block; float: right"><strong>200.000</strong></h4>
-      </div>
-    </div>
-
-  </div>
-    -->
   <br>
   <br>
   <style>
+    custom-height {
+      height: 500px;
+   }
+    .spacing-right {
+      margin-right: 10px; 
+    }
     .center-img {
       display: block;
       margin-left: auto;

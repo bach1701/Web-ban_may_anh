@@ -1,0 +1,18 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block detail %}
+<div class="row justify-content-center">
+    {%for product in products %}
+    <div class="col-lg-3 me-5 p-3 ms-3 border border-dark rounded">
+        <img class="center-img" src="{{product.ImageURL}}" height="240">
+        <div class="success product">
+            <h6><strong>{{product.nameProduct}}</strong></h6>
+            <hr>
+            <button data-product={{product.id}} data-action="add" class="btn btn-success add-btn update-cart">Thêm vào giỏ hàng</button>
+            <a class="btn btn-outline-success" href="{% url "detail" %}?id={{product.id}}">Xem</a>
+            <h4 style="display: inline-block; float: right"><strong>${{product.price | floatformat:2}}</strong></h4>
+        </div>
+    </div>
+    {%endfor%}
+</div>
+{% endblock detail %}

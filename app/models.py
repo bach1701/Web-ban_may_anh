@@ -10,12 +10,20 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+class Category(models.Model):
+    sub_category = models.ForeignKey('self', on_delete=models.CASCADE, related_name='sub_categories',null=True,blank=True)
+    is_sub = models.BooleanField(default=False)
+    company_category = models.CharField(max_length=50, null=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    def __str__(self):
+        return self.company_category
 
 class Product(models.Model):
     nameProduct = models.CharField(max_length=50, null=True)
     price = models.FloatField()
-    companyProduct = models.CharField(max_length=50, null=True)
+    category = models.ManyToManyField(Category, related_name="product")
     image = models.ImageField(null=True, blank=True)
+    detail = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.nameProduct
@@ -67,6 +75,8 @@ class CustomerAddress(models.Model):
 
     def __str__(self):
         return self.address
+
+
 
 
 

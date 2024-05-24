@@ -40,7 +40,7 @@
         const csrftoken = getCookie('csrftoken');
         </script>
 
-        <title>Mua bán máy ảnh Đà Nẵng</title>
+        <title>Shop camera - Phạm Bách</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -63,18 +63,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Trang chủ</a>
                         </li>
-
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sản phẩm
-                            </a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Sản phẩm</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Canon</a></li>
-                                <li><a class="dropdown-item" href="#">Sony</a></li>
-                                <li><a class="dropdown-item" href="#">Nikon</a></li>
-                                <li><a class="dropdown-item" href="#">Fujifilm</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Leica</a></li>
+                              {%for i in categories%}
+                                <li><a class="dropdown-item" href="{%url 'category' %}?category={{i.slug}}">{{i.company_category}}</a></li>
+                                {%endfor%}
                             </ul>
                          </li>
 
@@ -124,6 +118,8 @@
         {% block cart_content %}{% endblock cart_content %}
         <!-- Checkout -->
         {% block checkout_content %}{% endblock checkout_content %}
+        <!-- Detail -->
+        {% block detail %}{% endblock detail %}
         <!-- Footer-->
         <br>
         <footer class="container--fluid bgfooter text-center fixed-bottom p-2 mt-5">
