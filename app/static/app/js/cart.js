@@ -29,5 +29,6 @@ for(i = 0; i < updateBtns.length; i++)
         })
         .then((data) =>{
             console.log('data',data)
+            location.reload()
         })
     }

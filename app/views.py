@@ -21,8 +21,6 @@ def cart(request):
     context={'items' : items, 'order' : order}
     return render(request, 'app/cart.html',context)
 
-
-
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -35,7 +33,6 @@ def checkout(request):
     return render(request, 'app/checkout.html',context)
 
 def updateItem(request):
-    
     data = json.loads(request.body)
     productID = data['productID']
     action = data['action']
@@ -68,7 +65,6 @@ def detail(request):
     else:
         items = []
         order = {'get_cart_items' : 0,'order.get_bill' : 0}
-        
     categories = Category.objects.filter(is_sub = False)
     id = request.GET.get('id','')
     products = Product.objects.filter(id=id)
